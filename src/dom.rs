@@ -1,13 +1,22 @@
 /* took from https://github.com/mbrubeck/robinson/blob/master/src/dom.rs */
 
 use std::collections::{HashMap, HashSet};
+use crate::layout::LayoutBox;
 
 pub type AttrMap = HashMap<String, String>;
 
 #[derive(Debug)]
 pub struct Node {
-    pub children: Vec<Node>,
     pub node_type: NodeType,
+
+    pub perent: Option<usize>,
+    pub first_child: Option<usize>,
+    pub next_sibling: Option<usize>
+}
+
+#[derive(Debug)]
+pub struct Arena {
+    pub nodes: Vec<Node>
 }
 
 #[derive(Debug)]
@@ -22,14 +31,26 @@ pub struct ElementData {
     pub attrs: AttrMap,
 }
 
-pub fn text(data: String) -> Node {
-    Node { children: vec![], node_type: NodeType::Text(data) }
+#[derive(Debug)]
+pub struct LayoutArena {
+    pub boxes: Vec<LayoutBox>,
 }
 
-pub fn elem(tag_name: String, attrs: AttrMap, children: Vec<Node>) -> Node {
+pub fn text(data: String) -> Node {
     Node {
-        children,
-        node_type: NodeType::Element(ElementData { tag_name, attrs })
+        node_type: NodeType::Text(data),
+        perent: None,
+        first_child: None,
+        next_sibling: None,
+    }
+}
+
+pub fn elem(tag_name: String, attrs: AttrMap) -> Node {
+    Node {
+        node_type: NodeType::Element(ElementData { tag_name, attrs }),
+        perent: None,
+        first_child: None,
+        next_sibling: None,
     }
 }
 

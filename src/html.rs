@@ -51,31 +51,39 @@ impl Parser {
         self.consume_while(|c| matches!(c, 'a'..='z' | 'A'..='Z' | '0'..'9'))
     }
 
-    fn parse_node(&mut self) -> dom::Node {
+    fn parse_node(&mut self, arena: &mut dom::Arena) -> usize {
         if self.starts_with("<") {
-            self.parse_element()
+            self.parse_element(arena)
         } else {
-            self.parse_text()
+            self.parse_text(arena)
         }
     }
 
-    fn parse_text(&mut self) -> dom::Node {
-        dom::text(self.consume_while(|c| c != '<'))
+    fn parse_text(&mut self, arena: &mut dom::Arena) -> usize {
+        let text_content = self.consume_while(|c| c != '<');
+        let node = dom::text(text_content);
+        arena.nodes.push(node);
+        return arena.nodes.len() - 1;
     }
 
-    fn parse_element(&mut self) -> dom::Node {
+    fn parse_element(&mut self, arena: &mut dom::Arena) -> usize {
         self.expect("<");
         let tag_name = self.parse_name();
         let attrs = self.parse_attributes();
         self.expect(">");
 
-        let children = self.parse_nodes();
+        let node = dom::elem(tag_name.clone(), attrs);
+        arena.nodes.push(node);
+        let current_id = arena.nodes.len() - 1;
+
+        let first_child_id = self.parse_nodes(arena, current_id);
+        arena.nodes[current_id].first_child = first_child_id;
 
         self.expect("</");
         self.expect(&tag_name);
         self.expect(">");
 
-        return dom::elem(tag_name, attrs, children);
+        return current_id;
     }
 
     fn parse_attr(&mut self) -> (String, String) {
@@ -107,25 +115,35 @@ impl Parser {
         return attributes;
     }
 
-    fn parse_nodes(&mut self) -> Vec<dom::Node> {
-        let mut nodes = Vec::new();
+    fn parse_nodes(&mut self, arena: &mut dom::Arena, parent_id: usize) -> Option<usize> {
+        let mut first_child_id: Option<usize> = None;
+        let mut previous_child_id: Option<usize> = None;
+
         loop {
             self.consume_whitespace();
             if self.eof() || self.starts_with("</") {
                 break;
             }
-            nodes.push(self.parse_node());
+
+            let current_child_id = self.parse_node(arena);
+            arena.nodes[current_child_id].perent = Some(parent_id);
+
+            if first_child_id.is_none() {
+                first_child_id = Some(current_child_id);
+            } else if let Some(prev_id) = previous_child_id {
+                arena.nodes[prev_id].next_sibling = Some(current_child_id);
+            }
+
+            previous_child_id = Some(current_child_id);
         }
-        return nodes;
+        return first_child_id;
     }
 }
 
-pub fn parse(source: String) -> dom::Node {
-    let mut nodes = Parser { pos: 0, input: source }.parse_nodes();
+pub fn parse(source: String) -> (dom::Arena, usize) {
+    let mut arena = dom::Arena { nodes: Vec::new() };
+    let mut parser = Parser { pos: 0, input: source };
 
-    if nodes.len() == 1 {
-        return nodes.remove(0);
-    } else {
-        return dom::elem("html".to_string(), HashMap::new(), nodes);
-    }
+    let root_id = parser.parse_node(&mut arena);
+    return (arena, root_id);
 }
