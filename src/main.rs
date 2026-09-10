@@ -16,7 +16,13 @@ fn print_tree(arena: &dom::Arena, node_id: usize, depth: usize) {
             }
         }
         dom::NodeType::Element(element_data) => {
-            println!("{}{}", indent, element_data.tag_name);
+            if !element_data.attrs.is_empty() {
+                let attrs_str: Vec<String> = element_data.attrs.iter().map(|(k, v)| format!("{}=\"{}\"", k, v)).collect();
+
+                println!("{}{} [{}]", indent, element_data.tag_name, attrs_str.join(", "));
+            } else {
+                println!("{}{}", indent, element_data.tag_name);
+            }
         }
     }
 

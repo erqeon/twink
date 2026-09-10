@@ -125,6 +125,11 @@ impl Parser {
                 break;
             }
 
+            if self.input[self.pos..].starts_with("<!--") {
+                self.parse_comment();
+                continue;
+            }
+
             let current_child_id = self.parse_node(arena);
             arena.nodes[current_child_id].perent = Some(parent_id);
 
@@ -137,6 +142,20 @@ impl Parser {
             previous_child_id = Some(current_child_id);
         }
         return first_child_id;
+    }
+
+    fn parse_comment(&mut self) {
+        if self.input[self.pos..].starts_with("<!--") {
+            self.pos += 4;
+
+            while !self.input[self.pos..].starts_with("-->") && self.pos < self.input.len() {
+                self.consume_char();
+            }
+
+            if self.pos < self.input.len() {
+                self.pos += 3;
+            }
+        }
     }
 }
 
