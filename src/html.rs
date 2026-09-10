@@ -1,4 +1,4 @@
-/* took from https://limpet.net/mbrubeck/2014/08/11/toy-layout-engine-2.html */
+/* took from: https://limpet.net/mbrubeck/2014/08/11/toy-layout-engine-2.html */
 
 use crate::dom;
 use std::collections::HashMap;
@@ -67,6 +67,7 @@ impl Parser {
     }
 
     fn parse_element(&mut self, arena: &mut dom::Arena) -> usize {
+        let parse_array = ["br", "img", "hr", "meta"];
         self.expect("<");
         let tag_name = self.parse_name();
         let attrs = self.parse_attributes();
@@ -75,6 +76,10 @@ impl Parser {
         let node = dom::elem(tag_name.clone(), attrs);
         arena.nodes.push(node);
         let current_id = arena.nodes.len() - 1;
+
+        if parse_array.contains(&tag_name.as_str()) {
+            return current_id;
+        }
 
         let first_child_id = self.parse_nodes(arena, current_id);
         arena.nodes[current_id].first_child = first_child_id;

@@ -2,7 +2,9 @@
 
 pub mod dom;
 pub mod html;
+pub mod css;
 pub mod layout;
+pub mod render;
 
 fn print_tree(arena: &dom::Arena, node_id: usize, depth: usize) {
     let node = &arena.nodes[node_id];
@@ -36,7 +38,7 @@ fn print_tree(arena: &dom::Arena, node_id: usize, depth: usize) {
 }
 
 fn main() {
-    let source: String = std::fs::read_to_string("index.html")
+    let source: String = std::fs::read_to_string("examples/index.html")
         .expect("not found index.html, create file!");
     let (arena, root_id) = html::parse(source);
     

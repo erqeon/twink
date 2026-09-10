@@ -1,4 +1,4 @@
-/* took from https://github.com/mbrubeck/robinson/blob/master/src/dom.rs */
+/* took from: https://github.com/mbrubeck/robinson/blob/master/src/dom.rs */
 
 use std::collections::{HashMap, HashSet};
 use crate::layout::LayoutBox;
