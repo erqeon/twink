@@ -1,0 +1,5 @@
+Here, points will be listed indicating how you can help the project.
+--------------------------------------------------------------------
+
+1. E: Support for <a> (render.rs).
+    H: Essentially, the processing for (h1, p, br) is already in place, now i need to implement handling for <a> so that render.rs comes to life.

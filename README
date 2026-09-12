@@ -1,15 +1,12 @@
-## twink
+## Twink Engine
 
-i know the code isn't exactly perfect right now, 
-and some people might criticize me for it—but i don't deny that the code is terrible. 
-it wouldn't be honest to claim i wrote it entirely myself. 
-i used ai in some places and copied from github in others.
+Quick Start:
+    - 1. git clone https://github.com/erqeon/twink
+    - 2. cd twink
+    - 3. cargo run
 
-if you happen to want to help the project (though it's unlikely), 
-you can send over some code. 
-i’d be happy to accept it.
-
-i would like to thank https://github.com/mbrubeck/ for writing Robinson. 
-i don't know how i would have written this browser engine without you.
-
-(don't even expect it—there won't be any useless facts here)
+## Map:
+    CONTRIBUTING - For your reference regarding the email dispatch.
+    COPYING - You generally won't need it for development, since you won't be interacting with it—though if you're curious about the license, it might come in handy (who actually reads this stuff?).
+    CREDITS - Here are listed all those who submitted the patch.
+    TASKS - If you are a beginner or want to solve a problem, this file will help you.
