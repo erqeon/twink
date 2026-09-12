@@ -39,7 +39,7 @@ fn print_tree(arena: &dom::Arena, node_id: usize, depth: usize) {
 }
 
 fn main() {
-    let source: String = std::fs::read_to_string("examples/index.html")
+    let source: String = std::fs::read_to_string("example/index.html")
         .expect("not found index.html, create file!");
     let (arena, _root_id) = html::parse(source);
     
