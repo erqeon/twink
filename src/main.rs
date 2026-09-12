@@ -6,6 +6,7 @@ pub mod css;
 pub mod layout;
 pub mod render;
 
+#[allow(dead_code)]
 fn print_tree(arena: &dom::Arena, node_id: usize, depth: usize) {
     let node = &arena.nodes[node_id];
     let indent = "  ".repeat(depth);
@@ -40,7 +41,8 @@ fn print_tree(arena: &dom::Arena, node_id: usize, depth: usize) {
 fn main() {
     let source: String = std::fs::read_to_string("examples/index.html")
         .expect("not found index.html, create file!");
-    let (arena, root_id) = html::parse(source);
+    let (arena, _root_id) = html::parse(source);
     
-    print_tree(&arena, root_id, 0);
+    // print_tree(&arena, root_id, 0);
+    let _ = render::render(&arena);
 }

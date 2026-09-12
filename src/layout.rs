@@ -141,7 +141,7 @@ impl Dimensions {
     }
 }
 
-#[warn(dead_code)]
+#[allow(dead_code)]
 fn sum<I>(iter: I) -> f32 where I: Iterator<Item=f32> {
     iter.fold(0., |a, b| a + b)
 }
