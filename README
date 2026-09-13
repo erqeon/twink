@@ -1,12 +1,11 @@
-## Twink Engine
+Right now, I’m developing this engine as a hobby project. 
+I know it won’t be as massive or professional as Chromium or Ladybird. 
+I’d like to know—from those cloning the repository or reading this—what 
+you dislike about it and what features you’d like to see. 
+If you’d like to help the project yourself and address a specific issue, 
+I’d be happy to accept issues and pull requests!
 
-Quick Start:
+if you want to test it:
     - 1. git clone https://github.com/erqeon/twink
     - 2. cd twink
     - 3. cargo run
-
-## Map:
-    CONTRIBUTING - For your reference regarding the email dispatch.
-    COPYING - You generally won't need it for development, since you won't be interacting with it—though if you're curious about the license, it might come in handy (who actually reads this stuff?).
-    CREDITS - Here are listed all those who submitted the patch.
-    TASKS - If you are a beginner or want to solve a problem, this file will help you.
